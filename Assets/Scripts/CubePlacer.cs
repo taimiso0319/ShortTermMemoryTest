@@ -4,6 +4,7 @@ using System.Collections;
 public class CubePlacer : MonoBehaviour {
 
 	public GameObject[] Cubes;
+	public GameObject CubesParent;
 	public int objectNum = 2;
 	public string[] selectedColor;
 	public int trueCount = 0;
@@ -14,15 +15,21 @@ public class CubePlacer : MonoBehaviour {
 	public int[] rndPlaceNum;
 	public int counterBool = 0;
 
+	private Vector2[] cubePos;
+
 	//int testCount = 0;
 
 	// Use this for initialization
 	void Start(){
 		selectedColor = new string[objectNum];
 		rndPlaceBool = new bool[24];
+		cubePos = new Vector2[24];
 		rndPlaceNum = new int[objectNum];		
 		for(int i = 0;i < rndPlaceBool.Length;i++){
 			rndPlaceBool[i] = false;
+		}
+		for(int i = 0; i < cubePos.Length;i++){
+			//fix or die
 		}
 	}
 	void Update(){
@@ -94,4 +101,28 @@ public class CubePlacer : MonoBehaviour {
 			}
 		}	
 	}
+
+	void localInstatiate(Vector2 vec,string cName){
+		GameObject instGameObject;
+		int cNum = 999;
+		switch(cName){
+		case "Red":			cNum = 0;break;
+		case "Orange":		cNum = 1;break;
+		case "Yellow":		cNum = 2;break;
+		case "LightGreen":	cNum = 3;break;
+		case "Green":		cNum = 4;break;
+		case "Emerald":		cNum = 5;break;
+		case "Blue":		cNum = 6;break;
+		case "DeepBlue":	cNum = 7;break;
+		case "Purple":		cNum = 8;break;
+		case "LightPurple":	cNum = 9;break;
+		default:break;
+		}
+		if(cNum != 999){
+			instGameObject = Instantiate(Cubes[cNum]) as GameObject;
+			instGameObject.transform.position = vec;
+			instGameObject.transform.parent = CubesParent.transform;
+		}
+	}
+
 }
