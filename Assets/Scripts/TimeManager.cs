@@ -132,7 +132,7 @@ public class TimeManager : MonoBehaviour {
 				cubePlacer.placedObject[i].SetActive(false);
 			}
 			if(rnd){
-				if(expRand.RandomBool() < 11){
+				if(expRand.RandomBool() < 10){
 					colorChange = true;
 					outputBoolStr = "True";
 				}else{ colorChange = false;
