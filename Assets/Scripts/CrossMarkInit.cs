@@ -15,9 +15,9 @@ public class CrossMarkInit : MonoBehaviour {
 		rectTrans = InputArea.GetComponent<RectTransform>();
 		rectTrans.position = new Vector3(Screen.width/2,Screen.height/2+40,0);
 		rectTrans = InputName.GetComponent<RectTransform>();
-		rectTrans.position = new Vector3(Screen.width/2,Screen.height/2+80,0);
+		rectTrans.position = new Vector3(Screen.width/2,Screen.height/2+75,0);
 		rectTrans = TestText.GetComponent<RectTransform>();
-		rectTrans.position = new Vector3(Screen.width/2,Screen.height/2,0);
+		rectTrans.position = new Vector3(Screen.width/2,Screen.height/2+120,0);
 	}
 
 }

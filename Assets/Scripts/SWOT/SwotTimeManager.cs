@@ -12,6 +12,7 @@ public class SwotTimeManager : MonoBehaviour {
 	public int count = 0;
 
 	public bool isStart;
+	public bool isEnd = false;
 	public bool timeReset;
 
 	public GameObject inputFieldObject;
@@ -23,6 +24,9 @@ public class SwotTimeManager : MonoBehaviour {
 	public ObjectChanger objChanger;
 	public GameObject endText;
 
+	public GameObject[] evalGradeTextObj;
+	public Text[] evalGradeText;
+
 	public string[] strData = new string[4];
 	public bool canInput;
 
@@ -31,33 +35,49 @@ public class SwotTimeManager : MonoBehaviour {
 		inputField = inputFieldObject.transform.FindChild("Text").GetComponent<Text>();
 		excWriter = GetComponent<ExcelWriter>();
 		objChanger = GetComponent<ObjectChanger>();
+		evalGradeText = new Text[evalGradeTextObj.Length];
+		for(int i = 0;i < evalGradeTextObj.Length; i++){
+			evalGradeText[i] = evalGradeTextObj[i].GetComponent<Text>();
+		}
 	}
 
 	void Update(){
-		if(Input.GetKeyDown(KeyCode.Return)&&!isStart){
-			if(inputField.text != ""){
-				isStart = true;
-				inputFieldObject.SetActive(false);
-				inputName.SetActive(false);
-				textObject.SetActive(false);
-				crossObject.SetActive(false);
-				excWriter.OpenWriter();
-				exp = true;
+		if(Input.GetKeyDown(KeyCode.Return)){
+			if(!isStart&&!isEnd){
+				if(inputField.text != ""){
+					isStart = true;
+					inputFieldObject.SetActive(false);
+					inputName.SetActive(false);
+					textObject.SetActive(false);
+					crossObject.SetActive(false);
+					excWriter.OpenWriter();
+					exp = true;
+				}
+			}
+			if(canInput&&strData[3]!=null){
+				SetStrData();
+				excWriter.Writing(string.Join(",",strData));
+				exp = !exp;
+				count++;
+				frameTimer = 0;
 			}
 		}
 		if(canInput){
-			if(Input.GetKeyDown(KeyCode.Alpha1))strData[3] = "1";
-			if(Input.GetKeyDown(KeyCode.Alpha2))strData[3] = "2";
-			if(Input.GetKeyDown(KeyCode.Alpha3))strData[3] = "3";
-			if(Input.GetKeyDown(KeyCode.Alpha4))strData[3] = "4";
-			if(Input.GetKeyDown(KeyCode.Alpha5))strData[3] = "5";
-			if(Input.GetKeyDown(KeyCode.Alpha6))strData[3] = "6";
-			if(Input.GetKeyDown(KeyCode.Alpha7))strData[3] = "7";
+			if(Input.GetKeyDown(KeyCode.Alpha1)){strData[3] = "1";setTextColor(1);}
+			if(Input.GetKeyDown(KeyCode.Alpha2)){strData[3] = "2";setTextColor(2);}
+			if(Input.GetKeyDown(KeyCode.Alpha3)){strData[3] = "3";setTextColor(3);}
+			if(Input.GetKeyDown(KeyCode.Alpha4)){strData[3] = "4";setTextColor(4);}
+			if(Input.GetKeyDown(KeyCode.Alpha5)){strData[3] = "5";setTextColor(5);}
+			if(Input.GetKeyDown(KeyCode.Alpha6)){strData[3] = "6";setTextColor(6);}
+			if(Input.GetKeyDown(KeyCode.Alpha7)){strData[3] = "7";setTextColor(7);}
 		}
+
 	}
 	// Update is called once per frame
 	void FixedUpdate () {
 		if(exp&&isStart){
+			if(strData[3]!=null)strData[3] = null;
+			setTextColor(0);
 			if(crossObject.activeSelf)crossObject.SetActive(false);
 			if(canInput)canInput = false;
 			if(!objChanger.picsPlate[count].activeSelf)objChanger.picsPlate[count].SetActive(true);
@@ -70,27 +90,28 @@ public class SwotTimeManager : MonoBehaviour {
 			if(!canInput)canInput = true;
 			if(!crossObject.activeSelf)crossObject.SetActive(true);
 			if(objChanger.picsPlate[count].activeSelf)objChanger.picsPlate[count].SetActive(false);
-			if(frameTimer>=restTime * 50){
-				SetStrData();
-				excWriter.Writing(string.Join(",",strData));
-				strData[3] = null;
-				exp = !exp;
-				count++;
-				timeReset = true;
-			}
+
 		}
 		if(count == 55&&isStart){
 			isStart = false;
+			isEnd = true;
 			if(!endText.activeSelf)endText.SetActive(true);
 			excWriter.CloseWriter();
 
 		}
 		if(isStart)frameTimer++;
-		if(timeReset){
-			frameTimer = 0;
-			timeReset = false;
+
+	}
+
+	void setTextColor(int textNum){
+		if(evalGradeTextObj[0].activeSelf){
+			for(int i = 0;i < evalGradeTextObj.Length;i++){
+				evalGradeText[i].color = new Color32(50,50,50,255);
+			}
+			if(textNum!=0)evalGradeText[textNum-1].color = new Color32(150,210,145,255);
 		}
 	}
+
 	void SetStrData(){
 		switch(objChanger.picsPlate[count].name.Substring(0,2)){
 		case "00":strData[0] = "00"; strData[1] = "Red"; strData[2] = "Cylinder"; 	break;
