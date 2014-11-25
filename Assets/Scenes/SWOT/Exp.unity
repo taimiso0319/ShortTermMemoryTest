@@ -4804,6 +4804,7 @@ MonoBehaviour:
   InputArea: {fileID: 468732190}
   stmt: 0
   stmtStr: 
+  dirFolderName: test
 --- !u!1 &1323679404
 GameObject:
   m_ObjectHideFlags: 0
