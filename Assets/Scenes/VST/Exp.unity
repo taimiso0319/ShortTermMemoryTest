@@ -527,6 +527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trueCount: 0
+  falseCount: 0
   CrossMark: {fileID: 1769444627}
   InputField: {fileID: 468732190}
   InputNameText: {fileID: 1893112218}
@@ -534,14 +535,16 @@ MonoBehaviour:
   EndText: {fileID: 1323679404}
   ButtonPrefab: {fileID: 100002, guid: c0584097e632e0b4889aaebcf58d7a01, type: 2}
   ButtonParent: {fileID: 1740104339}
-  trueButton: []
+  buttonGameObject: []
   charSize: 360
   charStr: []
   falseCharSize: 
   trueRandNum: 
   widthSize: 20
   heightSize: 18
-  defTimer: 30
+  defTimer: 10
+  spanTimer: 10
+  testTimes: 3
   timeCounter: 0
 --- !u!4 &1252707966
 Transform:
