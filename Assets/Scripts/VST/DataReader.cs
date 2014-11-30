@@ -28,5 +28,6 @@ public class DataReader : MonoBehaviour {
 			arrayList.Add(ch);
 			arrayLength++;
 		}
+		stReader.Close();
 	}
 }

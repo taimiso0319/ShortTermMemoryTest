@@ -16,6 +16,7 @@ public class VSTTimeManager : MonoBehaviour {
     public GameObject[] trueButton;
 
 	DataReader dtReader;
+	ExcelWriter exWriter;
 	public int charSize;
 	public string[] charStr;
 	private int trueCharSize;
@@ -35,6 +36,7 @@ public class VSTTimeManager : MonoBehaviour {
 	void Start () {
         timeCounter = defTimer;
 		dtReader = GetComponent<DataReader>();
+		exWriter = GetComponent<ExcelWriter>();
 		dtReader.OpenReader();
 		falseCharSize = new int[dtReader.arrayLength-1];
 		charStr = new string[dtReader.arrayLength];
@@ -81,14 +83,15 @@ public class VSTTimeManager : MonoBehaviour {
 
     void FixedUpdate(){
         if(isStart) {
-
-
             ////////////////////////////////////////////
             if((timeCounter -= Time.deltaTime) <= 0) {
                 isStart = false;
                 timeCounter = 0;
                 ButtonParent.SetActive(false);
                 EndText.SetActive(true);
+				exWriter.OpenWriter();
+				exWriter.Writing(trueCount.ToString());
+				exWriter.CloseWriter();
             }
         }
     }
