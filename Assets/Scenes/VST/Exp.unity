@@ -536,16 +536,20 @@ MonoBehaviour:
   ButtonPrefab: {fileID: 100002, guid: c0584097e632e0b4889aaebcf58d7a01, type: 2}
   ButtonParent: {fileID: 1740104339}
   buttonGameObject: []
+  exWriter: {fileID: 0}
   charSize: 360
   charStr: []
   falseCharSize: 
   trueRandNum: 
   widthSize: 20
   heightSize: 18
+  clickTime: 0
   defTimer: 10
   spanTimer: 10
   testTimes: 3
+  timesCount: 0
   timeCounter: 0
+  isStart: 0
 --- !u!4 &1252707966
 Transform:
   m_ObjectHideFlags: 0

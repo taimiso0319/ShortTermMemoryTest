@@ -17,7 +17,7 @@ public class VSTTimeManager : MonoBehaviour {
     public GameObject[] buttonGameObject;
 
 	DataReader dtReader;
-	ExcelWriter exWriter;
+    public ExcelWriter exWriter;
 	public int charSize;
 	public string[] charStr;
 	private int trueCharSize;
@@ -31,11 +31,14 @@ public class VSTTimeManager : MonoBehaviour {
     private int falseCounter = 0;
     private int trueObjectCounter = 0;
 
+    public float clickTime = 0;
+
     public int defTimer = 30;
     public int spanTimer = 10;
     public int testTimes = 3;
+    public int timesCount = 0;
     public float timeCounter;
-    private bool isStart = false;
+    public bool isStart = false;
     private bool isFirstTimeEnd = false;
 	// Use this for initialization
 	void Start () {
@@ -89,6 +92,7 @@ public class VSTTimeManager : MonoBehaviour {
             ReadMeText.SetActive(false);
             isStart = true;
             ButtonParent.SetActive(true);
+            exWriter.OpenWriter(timesCount);
         }
         if(isStart){
             for(int i = 0;i < buttonGameObject.Length;i++) {
@@ -113,7 +117,6 @@ public class VSTTimeManager : MonoBehaviour {
                 DestroyCharObject();
                 ButtonParent.SetActive(false);
                 //EndText.SetActive(true);
-				exWriter.OpenWriter();
 				exWriter.Writing(trueCount.ToString());
 				exWriter.CloseWriter();
                 isFirstTimeEnd = true;
@@ -122,11 +125,15 @@ public class VSTTimeManager : MonoBehaviour {
         }
         if(!isStart && isFirstTimeEnd) {
             if((timeCounter -= Time.deltaTime) <= 0) {
-                CrossMark.SetActive(false);
-                InitStats(1);
-                timeCounter = defTimer;
                 isStart = true;
-                ButtonParent.SetActive(true);
+                CrossMark.SetActive(false);
+                timesCount++;
+                if(timesCount != testTimes) {
+                    InitStats(timesCount);
+                    exWriter.OpenWriter(timesCount);
+                    timeCounter = defTimer;
+                    ButtonParent.SetActive(true);
+                }
             }
         }
     }

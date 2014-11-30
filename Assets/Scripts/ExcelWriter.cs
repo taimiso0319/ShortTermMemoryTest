@@ -36,25 +36,46 @@ public class ExcelWriter : MonoBehaviour {
 		}
 	}
 
-	public void OpenWriter(){
-		if(!System.IO.Directory.Exists(@"Excels/"+dirFolderName+"/"+areaText.text))System.IO.Directory.CreateDirectory(@"Excels/"+dirFolderName+"/"+areaText.text);
-		stmtStr = @"Excels/"+ dirFolderName +"/"+areaText.text+"/"+"Exp_"+
-			System.DateTimeOffset.Now.Year.ToString()   +
-				"年" +
-				System.DateTimeOffset.Now.Month.ToString()  +
-				"月" +
-				System.DateTimeOffset.Now.Day.ToString()	+
-				"日" +
-				System.DateTimeOffset.Now.Hour.ToString() 	+
-				"時" +
-				System.DateTimeOffset.Now.Minute.ToString() +
-				"分" +
-				System.DateTimeOffset.Now.Second.ToString() +
-					"秒" + ".csv";
-		if(!write){
-			stWriter = new StreamWriter(stmtStr);
-			write=!write;
+    public void OpenWriter() {
+        if(!System.IO.Directory.Exists(@"Excels/" + dirFolderName + "/" + areaText.text)) System.IO.Directory.CreateDirectory(@"Excels/" + dirFolderName + "/" + areaText.text);
+        stmtStr = @"Excels/" + dirFolderName + "/" + areaText.text + "/" + "Exp_" +
+            System.DateTimeOffset.Now.Year.ToString() +
+                "年" +
+                System.DateTimeOffset.Now.Month.ToString() +
+                "月" +
+                System.DateTimeOffset.Now.Day.ToString() +
+                "日" +
+                System.DateTimeOffset.Now.Hour.ToString() +
+                "時" +
+                System.DateTimeOffset.Now.Minute.ToString() +
+                "分" +
+                System.DateTimeOffset.Now.Second.ToString() +
+                    "秒" + ".csv";
+        if(!write) {
+            stWriter = new StreamWriter(stmtStr);
+            write = !write;
 
-		}
-	}
+        }
+    }
+    public void OpenWriter(int times) {
+        if(!System.IO.Directory.Exists(@"Excels/" + dirFolderName + "/" + areaText.text)) System.IO.Directory.CreateDirectory(@"Excels/" + dirFolderName + "/" + areaText.text);
+        stmtStr = @"Excels/" + dirFolderName + "/" + areaText.text + "/" + "Exp_" + times +
+            System.DateTimeOffset.Now.Year.ToString() +
+                "年" +
+                System.DateTimeOffset.Now.Month.ToString() +
+                "月" +
+                System.DateTimeOffset.Now.Day.ToString() +
+                "日" +
+                System.DateTimeOffset.Now.Hour.ToString() +
+                "時" +
+                System.DateTimeOffset.Now.Minute.ToString() +
+                "分" +
+                System.DateTimeOffset.Now.Second.ToString() +
+                    "秒" + ".csv";
+        if(!write) {
+            stWriter = new StreamWriter(stmtStr);
+            write = !write;
+
+        }
+    }
 }
