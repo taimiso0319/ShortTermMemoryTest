@@ -14,6 +14,7 @@ public class VSTTimeManager : MonoBehaviour {
     public GameObject EndText;
     public GameObject ButtonPrefab;
     public GameObject ButtonParent;
+	public GameObject NextString;
     public GameObject[] buttonGameObject;
 
 	DataReader dtReader;
@@ -37,8 +38,9 @@ public class VSTTimeManager : MonoBehaviour {
     public int spanTimer = 10;
     public int testTimes = 3;
     public int timesCount = 0;
-    public float timeCounter;
-    public bool isStart = false;
+	public float timeCounter;
+	public bool isStart = false;
+	public bool isEnd = false;
     private bool isFirstTimeEnd = false;
 	// Use this for initialization
 	void Start () {
@@ -75,6 +77,8 @@ public class VSTTimeManager : MonoBehaviour {
                 counter++;
             }
         }
+		NextString.GetComponent<Text>().text = "探索する文字は" + charStr[0] + "です。";
+		NextString.SetActive(true);
     }
 
     void DestroyCharObject() {
@@ -85,14 +89,15 @@ public class VSTTimeManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKeyDown(KeyCode.Return)&&!isStart) {
+        if(Input.GetKeyDown(KeyCode.Return)&&!isStart&&!isFirstTimeEnd) {
             CrossMark.SetActive(false);
             InputField.SetActive(false);
             InputNameText.SetActive(false);
             ReadMeText.SetActive(false);
             isStart = true;
             ButtonParent.SetActive(true);
-            exWriter.OpenWriter(timesCount);
+			exWriter.OpenWriter(timesCount,string.Join("_",charStr));
+			NextString.SetActive(false);
         }
         if(isStart){
             for(int i = 0;i < buttonGameObject.Length;i++) {
@@ -109,31 +114,36 @@ public class VSTTimeManager : MonoBehaviour {
 	}
 
     void FixedUpdate(){
-        if(isStart) {
+        if(isStart&&!isEnd) {
             ////////////////////////////////////////////
             if((timeCounter -= Time.deltaTime) <= 0) {
                 isStart = false;
                 timeCounter = spanTimer;
                 DestroyCharObject();
                 ButtonParent.SetActive(false);
-                //EndText.SetActive(true);
+				//EndText.SetActive(true);
 				exWriter.Writing(trueCount.ToString());
+				exWriter.Writing(falseCount.ToString());
 				exWriter.CloseWriter();
                 isFirstTimeEnd = true;
-                CrossMark.SetActive(true);
+				timesCount++;
+				if(timesCount!=testTimes){
+					InitStats(timesCount);
+					CrossMark.SetActive(true);
+				}
             }
         }
-        if(!isStart && isFirstTimeEnd) {
+		if(timesCount == testTimes){
+			EndText.SetActive(true);
+			isEnd = true;
+		}
+        if(!isStart && isFirstTimeEnd && !isEnd) {
             if((timeCounter -= Time.deltaTime) <= 0) {
-                isStart = true;
                 CrossMark.SetActive(false);
-                timesCount++;
-                if(timesCount != testTimes) {
-                    InitStats(timesCount);
-                    exWriter.OpenWriter(timesCount);
-                    timeCounter = defTimer;
-                    ButtonParent.SetActive(true);
-                }
+				exWriter.OpenWriter(timesCount,string.Join("_",charStr));
+	            timeCounter = defTimer;
+				ButtonParent.SetActive(true);
+				isStart = true;
             }
         }
     }
@@ -170,7 +180,7 @@ public class VSTTimeManager : MonoBehaviour {
         TextColorChanger txColorChanger;
         Text tx;
         tempGameObject = Instantiate(ButtonPrefab) as GameObject;
-        //tempGameObject.transform.parent = CrossMark.transform.parent;
+        tempGameObject.transform.parent = CrossMark.transform.parent;
         tx = tempGameObject.transform.FindChild("Text").GetComponent<Text>();
         txColorChanger = tempGameObject.transform.FindChild("Text").GetComponent<TextColorChanger>();
         buttonGameObject[count] = tempGameObject.transform.FindChild("Text").gameObject;

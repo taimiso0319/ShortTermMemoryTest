@@ -58,7 +58,7 @@ public class TimeManager : MonoBehaviour {
 				isStart = true;
 				inputFieldObject.SetActive(false);
 				inputName.SetActive(false);
-				excWriter.OpenWriter();
+				excWriter.OpenWriter(cubePlacer.objectNum);
 			}
 		}
 		if(Input.GetKeyDown(KeyCode.LeftArrow)&&isSelecting){

@@ -13,7 +13,7 @@ public class DataReader : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		System.IO.Directory.SetCurrentDirectory(System.IO.Directory.GetCurrentDirectory());
+		//System.IO.Directory.SetCurrentDirectory(System.IO.Directory.GetCurrentDirectory());
 	}
 	
 	// Update is called once per frame
@@ -22,7 +22,7 @@ public class DataReader : MonoBehaviour {
         arrayLength = 0;
         arrayList = new ArrayList();
 		dataStr = @"Excels/char"+ dataNum.ToString() +".data";
-		stReader = new StreamReader(dataStr,Encoding.GetEncoding("Shift_JIS"));
+		stReader = new StreamReader(dataStr,Encoding.GetEncoding("UTF-8"));//Shift_JIS
 		while((ch = stReader.ReadLine())!=null){
 			arrayList.Add(ch);
 			arrayLength++;
