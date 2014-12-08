@@ -18,13 +18,15 @@ public class VSTTimeManager : MonoBehaviour {
     public GameObject[] buttonGameObject;
 
 	DataReader dtReader;
+	public string[] outPutStr;
     public ExcelWriter exWriter;
 	public int charSize;
-	public string[] charStr;
+	public string[,] charStr;
 	private int trueCharSize;
 	public int[] falseCharSize;
 	public int[] trueRandNum;
     public int[,] falseRandNum;
+	public int[] randNum;
     public int widthSize = 20;
     public int heightSize = 18;
     private int counter = 0;
@@ -44,23 +46,34 @@ public class VSTTimeManager : MonoBehaviour {
     private bool isFirstTimeEnd = false;
 	// Use this for initialization
 	void Start () {
-        timeCounter = defTimer;
 		dtReader = GetComponent<DataReader>();
 		exWriter = GetComponent<ExcelWriter>();
-
+		charStr = new string[20,3];
+		randNum = new int[testTimes];
+		for(int i = 0;i < testTimes; i++){
+			dtReader.OpenReader(i%4);
+			Debug.Log(i%4);
+			for(int j = 0;j < 3;j++){
+				charStr[i,j] = (string)dtReader.arrayList[j];
+			}
+			randNum[i] = i;
+		}
+		outPutStr = new string[3];
+        timeCounter = defTimer;
+		ArrayRandom();
         InitStats(0);
 
 	}
 
-    void InitStats(int dataNum) {
+	void InitStats(int times) {
         counter = 0;
-        dtReader.OpenReader(dataNum);
+//        dtReader.OpenReader(dataNum);
         falseCharSize = new int[dtReader.arrayLength - 1];
-        charStr = new string[dtReader.arrayLength];
-
-        for(int i = 0;i < charStr.Length;i++) {
-            charStr[i] = (string)dtReader.arrayList[i];
-        }
+//        charStr = new string[dtReader.arrayLength];
+//
+//        for(int i = 0;i < charStr.Length;i++) {
+//            charStr[i] = (string)dtReader.arrayList[i];
+//        }
         trueCharSize = (charSize * 2) / 45;
         buttonGameObject = new GameObject[charSize];
         for(int i = 0;i < falseCharSize.Length;i++) {
@@ -73,11 +86,11 @@ public class VSTTimeManager : MonoBehaviour {
 
         for(int h = 0;h < heightSize;h++) {
             for(int w = 0;w < widthSize;w++) {
-                LocalInstantiate(new Vector3(-380f + (40 * w), 340f - (40 * h), 0), counter);
+                LocalInstantiate(new Vector3(-380f + (40 * w), 340f - (40 * h), 0), counter,timesCount);
                 counter++;
             }
         }
-		NextString.GetComponent<Text>().text = "探索する文字は" + charStr[0] + "です。";
+		NextString.GetComponent<Text>().text = "探索する文字は" + charStr[randNum[times],0] + "です。";
 		NextString.SetActive(true);
     }
 
@@ -96,7 +109,10 @@ public class VSTTimeManager : MonoBehaviour {
             ReadMeText.SetActive(false);
             isStart = true;
             ButtonParent.SetActive(true);
-			exWriter.OpenWriter(timesCount,string.Join("_",charStr));
+			for(int i = 0; i < outPutStr.Length; i++){
+				outPutStr[i] = charStr[randNum[timesCount],i];
+			}
+			exWriter.OpenWriter(timesCount,string.Join("_",outPutStr));
 			NextString.SetActive(false);
         }
         if(isStart){
@@ -138,9 +154,12 @@ public class VSTTimeManager : MonoBehaviour {
 			isEnd = true;
 		}
         if(!isStart && isFirstTimeEnd && !isEnd) {
-            if((timeCounter -= Time.deltaTime) <= 0) {
+			if((timeCounter -= Time.deltaTime) <= 0) {			
+				for(int i = 0; i < outPutStr.Length; i++){
+					outPutStr[i] = charStr[randNum[timesCount],i];
+				}
                 CrossMark.SetActive(false);
-				exWriter.OpenWriter(timesCount,string.Join("_",charStr));
+				exWriter.OpenWriter(timesCount,string.Join("_",outPutStr));
 	            timeCounter = defTimer;
 				ButtonParent.SetActive(true);
 				isStart = true;
@@ -174,7 +193,7 @@ public class VSTTimeManager : MonoBehaviour {
         }
 	}
 
-    void LocalInstantiate(Vector3 vec,int count) {
+    void LocalInstantiate(Vector3 vec,int count,int times) {
         RectTransform rectTransform;
         GameObject tempGameObject;
         TextColorChanger txColorChanger;
@@ -187,7 +206,7 @@ public class VSTTimeManager : MonoBehaviour {
         rectTransform = tempGameObject.GetComponent<RectTransform>();
         for(int i = 0;i < trueRandNum.Length;i++) {
             if(trueRandNum[i] == count) {
-                tx.text = charStr[0];
+                tx.text = charStr[randNum[times],0];
                 txColorChanger.trueChar = true;
                 trueObjectCounter++;
             }
@@ -195,7 +214,7 @@ public class VSTTimeManager : MonoBehaviour {
         for(int i = 0;i < falseCharSize.Length;i++) {
             for(int j = 0;j < falseCharSize[0];j++) {
                 if(falseRandNum[i, j] == count) {
-                    tx.text = charStr[i+1];
+                    tx.text = charStr[randNum[times],i+1];
                     txColorChanger.trueChar = false;
                 }
             }
@@ -203,4 +222,14 @@ public class VSTTimeManager : MonoBehaviour {
         rectTransform.localPosition = vec;
         tempGameObject.transform.parent = ButtonParent.transform;
     }
+	void ArrayRandom(){
+		int tempRnd;
+		int temp;
+		for(int i = 0;i < testTimes;i++){
+			tempRnd = Random.Range(0,testTimes);
+			temp = randNum[i];
+			randNum[i] = randNum[tempRnd];
+			randNum[tempRnd] = temp;
+		}
+	}
 }

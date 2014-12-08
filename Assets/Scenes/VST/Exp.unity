@@ -394,7 +394,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .600000024, g: .603921592, b: .600000024, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -606,17 +606,18 @@ MonoBehaviour:
   ButtonParent: {fileID: 1740104339}
   NextString: {fileID: 517415880}
   buttonGameObject: []
+  outPutStr: []
   exWriter: {fileID: 0}
   charSize: 360
-  charStr: []
   falseCharSize: 
   trueRandNum: 
+  randNum: 
   widthSize: 20
   heightSize: 18
   clickTime: 0
   defTimer: 30
-  spanTimer: 8
-  testTimes: 3
+  spanTimer: 30
+  testTimes: 20
   timesCount: 0
   timeCounter: 0
   isStart: 0
@@ -891,7 +892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 50

@@ -32,10 +32,12 @@ public class TextColorChanger : MonoBehaviour{
         if(trueChar) {
             tx.color = colorGreen;
         }
+		if(!isClicked){
+			string[] tempStr = {trueChar.ToString(),(timer-vst.clickTime).ToString()};
+			writeStr = string.Join(",",tempStr);
+	        vst.exWriter.Writing(writeStr);
+	        vst.clickTime = timer;
+		}
 		isClicked = true;
-		string[] tempStr = {trueChar.ToString(),(timer-vst.clickTime).ToString()};
-		writeStr = string.Join(",",tempStr);
-        vst.exWriter.Writing(writeStr);
-        vst.clickTime = timer;
     }
 }
