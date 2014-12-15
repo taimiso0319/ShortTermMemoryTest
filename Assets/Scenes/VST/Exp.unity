@@ -577,6 +577,7 @@ GameObject:
   - 114: {fileID: 1252707967}
   - 114: {fileID: 1252707969}
   - 114: {fileID: 1252707965}
+  - 114: {fileID: 1252707968}
   m_Layer: 0
   m_Name: SoftwareManager
   m_TagString: Untagged
@@ -622,6 +623,7 @@ MonoBehaviour:
   timeCounter: 0
   isStart: 0
   isEnd: 0
+  imgWriting: 0
 --- !u!4 &1252707966
 Transform:
   m_ObjectHideFlags: 0
@@ -649,6 +651,17 @@ MonoBehaviour:
   InputArea: {fileID: 468732190}
   InputName: {fileID: 1893112218}
   TestText: {fileID: 1346210624}
+--- !u!114 &1252707968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1252707964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be63414fd0ed43c2b346f293f88457c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1252707969
 MonoBehaviour:
   m_ObjectHideFlags: 0

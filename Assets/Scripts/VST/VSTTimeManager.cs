@@ -17,7 +17,8 @@ public class VSTTimeManager : MonoBehaviour {
 	public GameObject NextString;
     public GameObject[] buttonGameObject;
 
-	DataReader dtReader;
+	private DataReader dtReader;
+	private ImageWriter imgWriter;
 	public string[] outPutStr;
     public ExcelWriter exWriter;
 	public int charSize;
@@ -44,10 +45,12 @@ public class VSTTimeManager : MonoBehaviour {
 	public bool isStart = false;
 	public bool isEnd = false;
     private bool isFirstTimeEnd = false;
+	public bool imgWriting = false; 
 	// Use this for initialization
 	void Start () {
 		dtReader = GetComponent<DataReader>();
 		exWriter = GetComponent<ExcelWriter>();
+		imgWriter = GetComponent<ImageWriter>();
 		charStr = new string[20,3];
 		randNum = new int[testTimes];
 		for(int i = 0;i < testTimes; i++){
@@ -109,6 +112,7 @@ public class VSTTimeManager : MonoBehaviour {
             ReadMeText.SetActive(false);
             isStart = true;
             ButtonParent.SetActive(true);
+			if(imgWriting)imgWriter.ScreenShot();
 			for(int i = 0; i < outPutStr.Length; i++){
 				outPutStr[i] = charStr[randNum[timesCount],i];
 			}
@@ -162,6 +166,7 @@ public class VSTTimeManager : MonoBehaviour {
 				exWriter.OpenWriter(timesCount,string.Join("_",outPutStr));
 	            timeCounter = defTimer;
 				ButtonParent.SetActive(true);
+				if(imgWriting)imgWriter.ScreenShot();
 				isStart = true;
             }
         }
